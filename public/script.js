@@ -43,6 +43,7 @@ chatForm.addEventListener('submit', async (e) => {
             const errorData = await response.json();
             throw new Error(errorData.error || "Terjadi kesalahan di server");
         }
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
