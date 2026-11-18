@@ -22,6 +22,7 @@ app.post('/api/chat', async (req, res) => {
                 error: "Messages harus berupa array" 
             });
         }
+
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', 
             {
                 method: 'POST',
@@ -50,6 +51,7 @@ app.post('/api/chat', async (req, res) => {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
