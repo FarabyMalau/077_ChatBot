@@ -14,3 +14,32 @@ function addMessage(sender, text) {
     chatBox.scrollTop = chatBox.scrollHeight;
     return content;
 }
+
+chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    addMessage('user', message);
+    messages.push({ role: 'user', content: message });
+    
+    userInput.value = '';
+    userInput.disabled = true;
+    const button = chatForm.querySelector("button");
+    button.disabled = true;
+    button.textContent = "Menunggu...";
+
+    const botContent = addMessage('bot', '');
+    let botResponse = "";
+
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Terjadi kesalahan di server");
+        }
